@@ -31,7 +31,14 @@ public final class RangeTree<K extends Comparable<? super K>, V> {
   }
 
   public V get(K key, Function<K, Entry<Range<K>, V>> loader) {
-    return null;
+    Objects.requireNonNull(loader, "loader");
+    Node<K, V> node = this.findNode(key);
+    if (node == null) {
+      // requires to traverse the tree again but the common case (lookup) is non-recursive 
+      Entry<Range<K>, V> entry = loader.apply(key);
+      Range<K> range = entry.getKey();
+      insert(this.root, range.getLow(), range.getHigh(), entry.getValue());
+    }
   }
 
   public void put(K low, K high, V data) {
@@ -41,7 +48,7 @@ public final class RangeTree<K extends Comparable<? super K>, V> {
   private static RuntimeException notFound(Object key) {
     return new NoSuchElementException("no range found for: " + key);
   }
-
+  
   private Node<K, V> findNode(K key) {
     Node<K, V> current = this.root;
     while (current != null) {
@@ -56,13 +63,12 @@ public final class RangeTree<K extends Comparable<? super K>, V> {
     };
     return null;
   }
-  
-  private Node<K, V> insert(Node<K, V> h, K low, K high, V value)
-  {
-    if (h == null)     {
+
+  private Node<K, V> insert(Node<K, V> h, K low, K high, V value) {
+    if (h == null) {
       return new Node<>(low, high, value);
     }
-    if (h.left.isRed() && h.right.isRed()) {
+    if (isRed(h.left) && isRed(h.right)) {
       h.flipColor();
     }
     int cmp = key.compareTo(h.key);
@@ -74,27 +80,32 @@ public final class RangeTree<K extends Comparable<? super K>, V> {
     } else {
       h.right = insert(h.right, low, high, value);
     }
-    if (h.right.isRed() && !h.left.isRed()) {
+    if (isRed(h.right) && !isRed(h.left)) {
       h = h.rotateLeft();
     }
-    if (h.left.isRed() && h.left.left.isRed()) {
+    if (isRed(h.left) && isRed(h.left.left)) {
+      // TODO left null check?
       h = h.rotateRight();
     }
     return h;
-    }
+  }
+  
+  private static boolean isRed(Node<?, ?> node) {
+    return node != null && node.color == Node.RED;
+  }
 
 
   static final class Node<K extends Comparable<? super K>, V> {
 
-    private static final boolean RED   = true;
-    private static final boolean BLACK = false;
+    static final boolean RED   = true;
+    static final boolean BLACK = false;
 
-    private K low;
-    private K high;
-    private V value;
-    private boolean color;
-    private Node<K, V> left; // smaller
-    private Node<K, V> right; // larger
+    K low;
+    K high;
+    V value;
+    boolean color;
+    Node<K, V> left; // smaller
+    Node<K, V> right; // larger
 
     Node(K low, K high, V data) {
       Objects.requireNonNull(low, "low");
@@ -104,7 +115,7 @@ public final class RangeTree<K extends Comparable<? super K>, V> {
       this.value = data;
       this.color = RED;
     }
-    
+
     int compareTo(K key) {
       if (this.low.compareTo(key) > 0) {
         return -1;
@@ -113,11 +124,6 @@ public final class RangeTree<K extends Comparable<? super K>, V> {
         return 1;
       }
       return 0;
-    }
-
-    boolean isRed() {
-      // TOOD null check?
-      return this.color == RED;
     }
 
     void flipColor() {
