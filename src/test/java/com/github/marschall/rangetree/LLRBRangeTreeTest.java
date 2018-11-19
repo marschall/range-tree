@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class LLRBRangeTreeTest {
 
-  private RangeTree<Integer, String> tree;
+  private RangeMap<Integer, String> tree;
 
   @BeforeEach
   void setUp() {
