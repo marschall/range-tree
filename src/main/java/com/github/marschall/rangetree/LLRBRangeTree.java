@@ -115,9 +115,9 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
     if (isRed(h.left) && isRed(h.right)) {
       h.flipColor();
     }
-    if (h.low.compareTo(low) < 0) {
+    if (h.low.compareTo(high) > 0) {
       h.left = insert(h.left, low, high, value);
-    } else if (h.high.compareTo(high) > 0) {
+    } else if (h.high.compareTo(low) < 0) {
       h.right = insert(h.right, low, high, value);
     } else {
       throw overlappingRange(h, low, high);
@@ -166,11 +166,13 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
     }
 
     int compareToKey(K key) {
-      if (this.low.compareTo(key) > 0) {
-        return -1;
+      int lowCompare = this.low.compareTo(key);
+      if (lowCompare > 0) {
+        return lowCompare;
       }
-      if (this.high.compareTo(key) < 0) {
-        return 1;
+      int highCompare = this.high.compareTo(key);
+      if (highCompare < 0) {
+        return highCompare;
       }
       return 0;
     }
@@ -201,6 +203,11 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
       x.color = this.color;
       this.color = RED;
       return x;
+    }
+    
+    @Override
+    public String toString() {
+      return "[" + this.low + ".." + this.high + "]:" + this.value;
     }
 
   }
