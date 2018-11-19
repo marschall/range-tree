@@ -9,11 +9,13 @@ import java.util.function.Function;
  * 
  * @param <K> the type of keys in this tree
  * @param <V> the type of values in this tree
+ * @see java.util.Map
  */
-public interface RangeTree<K extends Comparable<? super K>, V> {
+public interface RangeMap<K extends Comparable<? super K>, V> {
 
   /**
    * Removes all mappings from this object.
+   * @see java.util.Map#clear()
    */
   void clear();
 
@@ -23,6 +25,7 @@ public interface RangeTree<K extends Comparable<? super K>, V> {
    * @param key the key for which to look up a value, not {@code null}
    * @return the value associated with {@code key} or {@code null} if not found
    * @throws NullPointerException if {@code key} is {@code null}
+   * @see java.util.Map#get(Object)
    */
   V get(K key);
 
@@ -37,6 +40,7 @@ public interface RangeTree<K extends Comparable<? super K>, V> {
    * @return the value associated with {@code key} or {@code null} if not found
    * @throws NullPointerException if {@code key} is {@code null}
    * @throws NullPointerException if {@code key} is {@code mappingFunction}
+   * @see java.util.Map#computeIfAbsent(Object, Function)
    */
   V computeIfAbsent(K key, Function<? super K, Entry<Range<? extends K>, ? extends V>> mappingFunction);
 
@@ -49,6 +53,7 @@ public interface RangeTree<K extends Comparable<? super K>, V> {
    * @throws IllegalArgumentException if a mapping for a part or the whole range already exists
    * @throws IllegalArgumentException if {@code low} is not less than {@code high}
    * @throws NullPointerException if {@code low} or {@code high} are {@code null}
+   * @see java.util.Map#put(Object, Object)
    */
   void put(K low, K high, V value);
 

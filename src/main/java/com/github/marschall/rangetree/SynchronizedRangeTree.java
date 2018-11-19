@@ -5,14 +5,14 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * Adds synchronization around a {@link RangeTree}.
+ * Adds synchronization around a {@link RangeMap}.
  *
  * @param <K> the type of keys in this tree
  * @param <V> the type of values in this tree
  */
-public final class SynchronizedRangeTree<K extends Comparable<? super K>, V> implements RangeTree<K, V> {
+public final class SynchronizedRangeTree<K extends Comparable<? super K>, V> implements RangeMap<K, V> {
   
-  private final  RangeTree<K, V> delegate;
+  private final  RangeMap<K, V> delegate;
   
   private final Object lock;
   
@@ -22,7 +22,7 @@ public final class SynchronizedRangeTree<K extends Comparable<? super K>, V> imp
    * @param delegate the delegate to wrap, not {@code null}
    * @throws NullPointerException if {@code delegate} is {@code null}
    */
-  public SynchronizedRangeTree(RangeTree<K, V> delegate) {
+  public SynchronizedRangeTree(RangeMap<K, V> delegate) {
     Objects.requireNonNull(delegate, "delegate");
     this.delegate = delegate;
     this.lock = new Object();

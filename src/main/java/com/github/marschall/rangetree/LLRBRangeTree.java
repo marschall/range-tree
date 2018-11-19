@@ -19,8 +19,9 @@ import java.util.function.Function;
  * @param <V> the type of values in this tree
  * @see <a href="https://www.cs.princeton.edu/~rs/talks/LLRB/LLRB.pdf">Left-leaning Red-Black Trees</a>
  */
-public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements RangeTree<K, V> {
+public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements RangeMap<K, V> {
   
+  // TODO coverage
   // TODO adjacency testing and merging
   
   private Node<K, V> root;
