@@ -38,7 +38,7 @@ public interface RangeTree<K extends Comparable<? super K>, V> {
    * @throws NullPointerException if {@code key} is {@code null}
    * @throws NullPointerException if {@code key} is {@code mappingFunction}
    */
-  V computeIfAbsent(K key, Function<? super K, Entry<Range<K>, ? extends V>> mappingFunction);
+  V computeIfAbsent(K key, Function<? super K, Entry<Range<? extends K>, ? extends V>> mappingFunction);
 
   /**
    * Associates a range of keys with a value.

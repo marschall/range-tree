@@ -48,14 +48,14 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
   }
 
   @Override
-  public V computeIfAbsent(K key, Function<? super K, Entry<Range<K>, ? extends V>> mappingFunction) {
+  public V computeIfAbsent(K key, Function<? super K, Entry<Range<? extends K>, ? extends V>> mappingFunction) {
     Objects.requireNonNull(key, "key");
     Objects.requireNonNull(mappingFunction, "mappingFunction");
     Node<K, V> node = this.findNode(key);
     if (node == null) {
       // requires to traverse the tree again but the common case (lookup) is non-recursive 
-      Entry<Range<K>, ? extends V> entry = mappingFunction.apply(key);
-      Range<K> range = entry.getKey();
+      Entry<Range<? extends K>, ? extends V> entry = mappingFunction.apply(key);
+      Range<? extends K> range = entry.getKey();
       K low = range.getLow();
       K high = range.getHigh();
       validateRange(low, high);

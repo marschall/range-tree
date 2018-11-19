@@ -43,7 +43,7 @@ public final class SynchronizedRangeTree<K extends Comparable<? super K>, V> imp
   }
 
   @Override
-  public V computeIfAbsent(K key, Function<? super K, Entry<Range<K>, ? extends V>> mappingFunction) {
+  public V computeIfAbsent(K key, Function<? super K, Entry<Range<? extends K>, ? extends V>> mappingFunction) {
     synchronized (this.lock) {
       return delegate.computeIfAbsent(key, mappingFunction);
     }
