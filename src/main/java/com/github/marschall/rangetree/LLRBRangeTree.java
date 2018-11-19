@@ -7,6 +7,13 @@ import java.util.function.Function;
 
 /**
  * A range tree implementation based on a <a href="https://en.wikipedia.org/wiki/Left-leaning_red–black_tree">left-leaning red-black tree</a>
+ * 
+ * <p>This object in not thread-safe.</p>
+ * 
+ * <h2>Adjacency</h2>
+ * The implementation currency does not do any adjacency testing and
+ * merging. In theory we have the two adjacent ranges that map to the
+ * same object we can merge them.
  *
  * @param <K> the type of keys in this tree
  * @param <V> the type of values in this tree
@@ -14,16 +21,16 @@ import java.util.function.Function;
  */
 public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements RangeTree<K, V> {
   
+  // TODO adjacency testing and merging
+  
   private Node<K, V> root;
   
+  /**
+   * Default constructor.
+   */
   public LLRBRangeTree() {
     super();
   }
-
-  // adjacency testing and merging
-  // in theory we could merge adjacent nodes with the same data
-  // however we may end up merging too early and prevent later inserts
-  // with different data
 
   @Override
   public void clear() {
@@ -35,7 +42,7 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
     Objects.requireNonNull(key, "key");
     Node<K, V> node = this.findNode(key);
     if (node == null) {
-      throw notFound(key);
+      return null;
     }
     return node.value;
   }
@@ -89,7 +96,7 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
   private Node<K, V> findNode(K key) {
     Node<K, V> current = this.root;
     while (current != null) {
-      int compare = current.compareTo(key);
+      int compare = current.compareToKey(key);
       if (compare > 0) {
         current = current.left;
       } else if (compare < 0) {
@@ -108,9 +115,9 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
     if (isRed(h.left) && isRed(h.right)) {
       h.flipColor();
     }
-    if (h.left.compareTo(low) < 0) {
+    if (h.low.compareTo(low) < 0) {
       h.left = insert(h.left, low, high, value);
-    } else if (h.right.compareTo(high) > 0) {
+    } else if (h.high.compareTo(high) > 0) {
       h.right = insert(h.right, low, high, value);
     } else {
       throw overlappingRange(h, low, high);
@@ -158,7 +165,7 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
       this.color = RED;
     }
 
-    int compareTo(K key) {
+    int compareToKey(K key) {
       if (this.low.compareTo(key) > 0) {
         return -1;
       }
