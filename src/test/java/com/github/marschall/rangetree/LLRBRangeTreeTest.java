@@ -120,17 +120,17 @@ class LLRBRangeTreeTest {
   void computeIfAbsent() {
     this.tree.put(10, 19, "Range 1");
 
-    assertEquals("Range 1", this.tree.computeIfAbsent(10, key -> 
+    assertEquals("Range 1", this.tree.computeIfAbsent(10, key ->
     new SimpleEntry<>(new Range<>(10, 19), "Range 2")
         ));
 
-    assertEquals("Range 3", this.tree.computeIfAbsent(20, key -> 
+    assertEquals("Range 3", this.tree.computeIfAbsent(20, key ->
     new SimpleEntry<>(new Range<>(20, 29), "Range 3")
         ));
 
     assertEquals("Range 3", this.tree.get(29));
 
-    assertNull(this.tree.computeIfAbsent(30, key -> 
+    assertNull(this.tree.computeIfAbsent(30, key ->
     new SimpleEntry<>(new Range<>(30, 39), null)
         ));
     // would throw an exception if already mapped

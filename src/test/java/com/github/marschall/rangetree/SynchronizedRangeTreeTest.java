@@ -1,6 +1,7 @@
 package com.github.marschall.rangetree;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class SynchronizedRangeTreeTest {
 
   private static final String VALUE = "Range 1";
-  
+
   private RangeMap<Integer, String> tree;
 
   @BeforeEach
