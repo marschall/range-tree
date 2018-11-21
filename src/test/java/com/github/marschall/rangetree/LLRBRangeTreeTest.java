@@ -69,14 +69,18 @@ class LLRBRangeTreeTest {
   }
 
   @Test
-  void insertOneLeftOneRight() {
-    this.tree.put(10, 19, "Range 1");
-    this.tree.put(0, 9, "Range 0");
+  void insertOneLeftOneRightOneLeftOneRight() {
     this.tree.put(20, 29, "Range 2");
+    this.tree.put(10, 19, "Range 1");
+    this.tree.put(30, 39, "Range 3");
+    this.tree.put(0, 9, "Range 0");
+    this.tree.put(40, 49, "Range 4");
 
     assertEquals("Range 0", this.tree.get(0));
     assertEquals("Range 1", this.tree.get(10));
     assertEquals("Range 2", this.tree.get(20));
+    assertEquals("Range 3", this.tree.get(30));
+    assertEquals("Range 4", this.tree.get(40));
   }
 
   @Test
