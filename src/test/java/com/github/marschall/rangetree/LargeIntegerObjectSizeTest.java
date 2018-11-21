@@ -5,7 +5,7 @@ import java.math.BigInteger;
 import org.openjdk.jol.info.GraphLayout;
 
 public class LargeIntegerObjectSizeTest {
-  
+
   public static void main(String[] args) {
     test();
   }
@@ -63,17 +63,17 @@ public class LargeIntegerObjectSizeTest {
     }
 
   }
-  
+
   static final class I96 implements Comparable<I96> {
-    
+
     private final int high;
     private final long low;
-    
+
     I96(int high, long low) {
       this.high = high;
       this.low = low;
     }
-    
+
     static I96 valueOf(String s) {
       int length = s.length();
       if (length > 18 + 9) {
@@ -91,7 +91,7 @@ public class LargeIntegerObjectSizeTest {
       long low = Long.parseLong(s.substring(0 + highLength, length));
       return new I96(high, low);
     }
-    
+
     @Override
     public int compareTo(I96 o) {
       int highCompare = Integer.compare(this.high, o.high);
@@ -100,7 +100,7 @@ public class LargeIntegerObjectSizeTest {
       }
       return Long.compare(this.low, o.low);
     }
-    
+
   }
 
 

@@ -7,9 +7,9 @@ import java.util.function.Function;
 
 /**
  * A range tree implementation based on a <a href="https://en.wikipedia.org/wiki/Left-leaning_red–black_tree">left-leaning red-black tree</a>
- * 
+ *
  * <p>This object in not thread-safe.</p>
- * 
+ *
  * <h2>Adjacency</h2>
  * The implementation currency does not do any adjacency testing and
  * merging. In theory we have the two adjacent ranges that map to the
@@ -20,12 +20,12 @@ import java.util.function.Function;
  * @see <a href="https://www.cs.princeton.edu/~rs/talks/LLRB/LLRB.pdf">Left-leaning Red-Black Trees</a>
  */
 public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements RangeMap<K, V> {
-  
+
   // TODO coverage
   // TODO adjacency testing and merging
-  
+
   private Node<K, V> root;
-  
+
   /**
    * Default constructor.
    */
@@ -54,17 +54,17 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
     Objects.requireNonNull(mappingFunction, "mappingFunction");
     Node<K, V> node = this.findNode(key);
     if (node == null) {
-      // requires to traverse the tree again but the common case (lookup) is non-recursive 
+      // requires to traverse the tree again but the common case (lookup) is non-recursive
       Entry<Range<? extends K>, ? extends V> entry = mappingFunction.apply(key);
       Range<? extends K> range = entry.getKey();
       K low = range.getLow();
       K high = range.getHigh();
-      validateRange(low, high);
+      this.validateRange(low, high);
       V value = entry.getValue();
       if (value == null) {
         return null;
       }
-      this.root = insert(this.root, low, high, value);
+      this.root = this.insert(this.root, low, high, value);
       return value;
     } else {
       return node.value;
@@ -73,15 +73,15 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
 
   @Override
   public void put(K low, K high, V value) {
-    validateRange(low, high);
-    this.root = insert(this.root, low, high, value);
+    this.validateRange(low, high);
+    this.root = this.insert(this.root, low, high, value);
   }
 
   private void validateRange(K low, K high) {
     Objects.requireNonNull(low, "low");
     Objects.requireNonNull(high, "high");
-    if (low.compareTo(high) >= 0) {
-      throw mustBeLessThan(low, high);
+    if (low.compareTo(high) > 0) {
+      throw this.mustBeLessThan(low, high);
     }
   }
 
@@ -93,7 +93,7 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
   private static RuntimeException notFound(Object key) {
     return new NoSuchElementException("no range found for: " + key);
   }
-  
+
   private Node<K, V> findNode(K key) {
     Node<K, V> current = this.root;
     while (current != null) {
@@ -117,11 +117,11 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
       h.flipColor();
     }
     if (h.low.compareTo(high) > 0) {
-      h.left = insert(h.left, low, high, value);
+      h.left = this.insert(h.left, low, high, value);
     } else if (h.high.compareTo(low) < 0) {
-      h.right = insert(h.right, low, high, value);
+      h.right = this.insert(h.right, low, high, value);
     } else {
-      throw overlappingRange(h, low, high);
+      throw this.overlappingRange(h, low, high);
     }
     if (isRed(h.right) && !isRed(h.left)) {
       h = h.rotateLeft();
@@ -131,7 +131,7 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
     }
     return h;
   }
-  
+
   private RuntimeException overlappingRange(Node<?, ?> node, K low, K high) {
     return new IllegalArgumentException("can not insert range from: " + low
         + " to: " + high
@@ -205,7 +205,7 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
       this.color = RED;
       return x;
     }
-    
+
     @Override
     public String toString() {
       return "[" + this.low + ".." + this.high + "]:" + this.value;

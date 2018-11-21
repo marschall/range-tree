@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.Map.Entry;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,10 +22,31 @@ class LLRBRangeTreeTest {
   void oneNode() {
     this.tree.put(10, 20, "Range 1");
 
-    assertNull(tree.get(9));
-    assertEquals("Range 1", tree.get(10));
-    assertEquals("Range 1", tree.get(20));
-    assertNull(tree.get(21));
+    assertNull(this.tree.get(9));
+    assertEquals("Range 1", this.tree.get(10));
+    assertEquals("Range 1", this.tree.get(20));
+    assertNull(this.tree.get(21));
+  }
+
+  @Test
+  void clear() {
+    this.tree.put(10, 20, "Range 1");
+
+    assertEquals("Range 1", this.tree.get(10));
+    this.tree.clear();
+    assertNull(this.tree.get(10));
+  }
+  
+  @Test
+  void wrongKeyOrder() {
+    assertThrows(IllegalArgumentException.class, () -> this.tree.put(20, 10, "Range 1"));
+  }
+  
+  @Test
+  void rangeOfOne() {
+    this.tree.put(10, 10, "Range 1");
+    
+    assertEquals("Range 1", this.tree.get(10));
   }
 
   @Test
@@ -41,8 +64,8 @@ class LLRBRangeTreeTest {
     this.tree.put(10, 20, "Range 1");
     this.tree.put(0, 9, "Range 0");
 
-    assertEquals("Range 0", tree.get(0));
-    assertEquals("Range 1", tree.get(10));
+    assertEquals("Range 0", this.tree.get(0));
+    assertEquals("Range 1", this.tree.get(10));
   }
 
   @Test
@@ -52,30 +75,78 @@ class LLRBRangeTreeTest {
     this.tree.put(0, 9, "Range 0");
 
 
-    assertEquals("Range 0", tree.get(0));
-    assertEquals("Range 1", tree.get(10));
-    assertEquals("Range 2", tree.get(20));
+    assertEquals("Range 0", this.tree.get(0));
+    assertEquals("Range 1", this.tree.get(10));
+    assertEquals("Range 2", this.tree.get(20));
   }
-  
+
   @Test
   void insertOneRight() {
     this.tree.put(0, 9, "Range 0");
     this.tree.put(10, 20, "Range 1");
-    
-    assertEquals("Range 0", tree.get(0));
-    assertEquals("Range 1", tree.get(10));
+
+    assertEquals("Range 0", this.tree.get(0));
+    assertEquals("Range 1", this.tree.get(10));
   }
-  
+
   @Test
   void insertTwoRight() {
     this.tree.put(0, 9, "Range 0");
     this.tree.put(10, 19, "Range 1");
     this.tree.put(20, 29, "Range 2");
-    
-    
-    assertEquals("Range 0", tree.get(0));
-    assertEquals("Range 1", tree.get(10));
-    assertEquals("Range 2", tree.get(20));
+
+
+    assertEquals("Range 0", this.tree.get(0));
+    assertEquals("Range 1", this.tree.get(10));
+    assertEquals("Range 2", this.tree.get(20));
   }
+
+  @Test
+  void computeIfAbsent() {
+    this.tree.put(10, 20, "Range 1");
+
+    assertEquals("Range 1", this.tree.computeIfAbsent(10, key -> 
+      new SimpleEntry<>(new Range<>(10, 20), "Range 2")
+    ));
+    
+    assertEquals("Range 3", this.tree.computeIfAbsent(21, key -> 
+      new SimpleEntry<>(new Range<>(21, 30), "Range 3")
+    ));
+    
+    assertEquals("Range 3", this.tree.get(30));
+    
+    assertNull(this.tree.computeIfAbsent(31, key -> 
+      new SimpleEntry<>(new Range<>(31, 40), null)
+    ));
+    // would throw an exception if already mapped
+    this.tree.put(31, 40, "Range 4");
+  }
+  
+  static final class SimpleEntry<K, V> implements Entry<K, V> {
+    
+    private final K key;
+    private final V value;
+    
+    SimpleEntry(K key, V value) {
+      this.key = key;
+      this.value = value;
+    }
+    
+    @Override
+    public K getKey() {
+      return this.key;
+    }
+    @Override
+    public V getValue() {
+      return this.value;
+    }
+    
+    @Override
+    public V setValue(V value) {
+      throw new UnsupportedOperationException();
+    }
+    
+  }
+  
 
 }

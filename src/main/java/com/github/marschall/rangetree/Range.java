@@ -11,10 +11,10 @@ public final class Range<E> {
 
   private final E low;
   private final E high;
-  
+
   /**
    * Constructs a range
-   * 
+   *
    * @param low the lower bound, not {@code null}
    * @param high the upper bound, not {@code null}
    */
@@ -27,20 +27,20 @@ public final class Range<E> {
 
   /**
    * Returns the lower bound.
-   * 
+   *
    * @return the lower bound, not {@code null}
    */
   E getLow() {
-    return low;
+    return this.low;
   }
 
   /**
    * Returns the upper bound.
-   * 
+   *
    * @return the upper bound, not {@code null}
    */
   E getHigh() {
-    return high;
+    return this.high;
   }
 
 }
