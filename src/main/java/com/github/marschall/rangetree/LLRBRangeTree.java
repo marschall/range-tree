@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * A range tree implementation based on a <a href="https://en.wikipedia.org/wiki/Left-leaning_red–black_tree">left-leaning red-black tree</a>
+ * A range tree implementation based on a left-leaning red-black tree.
  *
  * <p>This object in not thread-safe.</p>
  *
