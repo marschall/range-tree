@@ -1,4 +1,4 @@
-Range Tree
+Range Tree [![Build Status](https://travis-ci.org/marschall/range-tree.svg?branch=master)](https://travis-ci.org/marschall/range-tree)
 ==========
 
 A simple range tree based on a left-leaning red-black tree.
