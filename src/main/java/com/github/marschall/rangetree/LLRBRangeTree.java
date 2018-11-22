@@ -1,7 +1,6 @@
 package com.github.marschall.rangetree;
 
 import java.util.Map.Entry;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -88,10 +87,6 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
   private RuntimeException mustBeLessThan(K low, K high) {
     return new IllegalArgumentException("low: " + low
         + " must be less than high: " + high);
-  }
-
-  private static RuntimeException notFound(Object key) {
-    return new NoSuchElementException("no range found for: " + key);
   }
 
   private Node<K, V> findNode(K key) {
