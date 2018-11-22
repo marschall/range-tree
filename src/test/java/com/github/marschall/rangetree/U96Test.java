@@ -11,12 +11,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-class I96Test {
+class U96Test {
 
   @Test
   void areAdjacent1() {
-    I96 smaller = I96.valueOf("1999999999999999999");
-    I96 greater =  I96.valueOf("2000000000000000000");
+    U96 smaller = U96.valueOf("1999999999999999999");
+    U96 greater =  U96.valueOf("2000000000000000000");
     assertSmaller(smaller, greater);
 
     assertAreAdjacent(smaller, greater);
@@ -24,8 +24,8 @@ class I96Test {
 
   @Test
   void areAdjacent2() {
-    I96 smaller = I96.valueOf("2000000000000000000");
-    I96 greater =  I96.valueOf("2000000000000000001");
+    U96 smaller = U96.valueOf("2000000000000000000");
+    U96 greater =  U96.valueOf("2000000000000000001");
 
     assertSmaller(smaller, greater);
     assertAreAdjacent(smaller, greater);
@@ -33,8 +33,8 @@ class I96Test {
 
   @Test
   void areAdjacent3() {
-    I96 smaller =  I96.valueOf("999999999999999999");
-    I96 greater = I96.valueOf("1000000000000000000");
+    U96 smaller =  U96.valueOf("999999999999999999");
+    U96 greater = U96.valueOf("1000000000000000000");
 
     assertSmaller(smaller, greater);
     assertAreAdjacent(smaller, greater);
@@ -42,8 +42,8 @@ class I96Test {
 
   @Test
   void areNotAdjacent() {
-    I96 smaller = I96.valueOf("1999999999999999998");
-    I96 greater =  I96.valueOf("2000000000000000000");
+    U96 smaller = U96.valueOf("1999999999999999998");
+    U96 greater =  U96.valueOf("2000000000000000000");
 
     assertThat(smaller, not(isAdjacentTo(greater)));
     assertThat(greater, not(isAdjacentTo(smaller)));
@@ -59,30 +59,31 @@ class I96Test {
     assertParseRoundTrip("1000000000000000000");
     assertParseRoundTrip("12345678901234567890123");
   }
-  
+
   @Test
   void parseFailed() {
+    assertThrows(NullPointerException.class, () -> U96.valueOf(null));
     assertInvalid("-1");
     assertInvalid("-1000000000000000000");
     assertInvalid("1234567890123456789012345678");
   }
-  
+
   private static void assertInvalid(String s) {
-    assertThrows(IllegalArgumentException.class, () -> I96.valueOf(s));
+    assertThrows(IllegalArgumentException.class, () -> U96.valueOf(s));
   }
 
   private static void assertParseRoundTrip(String s) {
-    assertEquals(s, I96.valueOf(s).toString());
+    assertEquals(s, U96.valueOf(s).toString());
   }
 
-  private static void assertSmaller(I96 smaller, I96 greater) {
+  private static void assertSmaller(U96 smaller, U96 greater) {
     assertThat(smaller, lessThan(greater));
     assertThat(smaller, comparesEqualTo(smaller));
     assertThat(greater, greaterThan(smaller));
     assertThat(greater, comparesEqualTo(greater));
   }
 
-  private static void assertAreAdjacent(I96 smaller, I96 greater) {
+  private static void assertAreAdjacent(U96 smaller, U96 greater) {
     assertThat(smaller, isAdjacentTo(greater));
     assertThat(greater, not(isAdjacentTo(smaller)));
     assertThat(greater, not(isAdjacentTo(greater)));

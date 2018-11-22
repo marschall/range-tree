@@ -1,19 +1,26 @@
 package com.github.marschall.rangetree;
 
+import java.util.Objects;
+
 /**
  * A 96 bit unsigned integer intended only for lookups into a {@link RangeMap}.
  */
-public final class I96 implements Comparable<I96> {
+public final class U96 implements Comparable<U96> {
 
   private final int high;
   private final long low;
 
-  public I96(int high, long low) {
+  private U96(int high, long low) {
     this.high = high;
     this.low = low;
   }
 
-  public static AdjacencyTester<I96> adjacencyTester() {
+  /**
+   * Returns an adjacency tester for {@link U96}.
+   * 
+   * @return an adjacency tester for {@link U96}
+   */
+  public static AdjacencyTester<U96> adjacencyTester() {
     return (low, high) -> {
       if (low.high == high.high) {
         return (low.low + 1) == high.low;
@@ -25,7 +32,19 @@ public final class I96 implements Comparable<I96> {
     };
   }
 
-  public static I96 valueOf(String s) {
+  /**
+   * Creates an {@link U96} from a string.
+   * 
+   * @param s a numeric string
+   * @return the parsed instance
+   * @throws NullPointerException if {@code s} is {@code null}
+   * @throws IllegalArgumentException if {@code s} has a negative sign
+   * @throws IllegalArgumentException if {@code s} is longer than 27
+   *                                  characters
+   */
+  public static U96 valueOf(String s) {
+    // TODO BigDecimal
+    Objects.requireNonNull(s, "s");
     int length = s.length();
     if (length > (18 + 9)) {
       throw new IllegalArgumentException("too long");
@@ -46,11 +65,11 @@ public final class I96 implements Comparable<I96> {
     if (low < 0L) {
       throw new IllegalArgumentException("negative values not allowed");
     }
-    return new I96(high, low);
+    return new U96(high, low);
   }
 
   @Override
-  public int compareTo(I96 o) {
+  public int compareTo(U96 o) {
     int highCompare = Integer.compare(this.high, o.high);
     if (highCompare != 0) {
       return highCompare;

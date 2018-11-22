@@ -13,10 +13,10 @@ public class LargeIntegerObjectSizeTest {
   public static void test() {
     String s = "123456789012"; // 64 or 56
     BigInteger b = new BigInteger(s); // 64
-    I96 i96 = new I96(0, 123456789012L); // 24
+    U96 u96 = U96.valueOf("123456789012"); // 24
     I128 i128 = new I128(0L, 123456789012L); // 32
 
-    for (Object o : new Object[] {s, b, i96, i128}) {
+    for (Object o : new Object[] {s, b, u96, i128}) {
       GraphLayout layout = GraphLayout.parseInstance(o);
       System.out.println(layout.toFootprint());
     }
