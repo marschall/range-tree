@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,10 +18,10 @@ class I96Test {
     I96 smaller = I96.valueOf("1999999999999999999");
     I96 greater =  I96.valueOf("2000000000000000000");
     assertSmaller(smaller, greater);
-    
+
     assertAreAdjacent(smaller, greater);
   }
-  
+
   @Test
   void areAdjacent2() {
     I96 smaller = I96.valueOf("2000000000000000000");
@@ -29,12 +30,12 @@ class I96Test {
     assertSmaller(smaller, greater);
     assertAreAdjacent(smaller, greater);
   }
-  
+
   @Test
   void areAdjacent3() {
     I96 smaller =  I96.valueOf("999999999999999999");
     I96 greater = I96.valueOf("1000000000000000000");
-    
+
     assertSmaller(smaller, greater);
     assertAreAdjacent(smaller, greater);
   }
@@ -43,13 +44,13 @@ class I96Test {
   void areNotAdjacent() {
     I96 smaller = I96.valueOf("1999999999999999998");
     I96 greater =  I96.valueOf("2000000000000000000");
-    
+
     assertThat(smaller, not(isAdjacentTo(greater)));
     assertThat(greater, not(isAdjacentTo(smaller)));
     assertThat(greater, not(isAdjacentTo(greater)));
     assertThat(smaller, not(isAdjacentTo(smaller)));
   }
-  
+
   @Test
   void parseSuccessfully() {
     assertParseRoundTrip("0");
@@ -59,6 +60,17 @@ class I96Test {
     assertParseRoundTrip("12345678901234567890123");
   }
   
+  @Test
+  void parseFailed() {
+    assertInvalid("-1");
+    assertInvalid("-1000000000000000000");
+    assertInvalid("1234567890123456789012345678");
+  }
+  
+  private static void assertInvalid(String s) {
+    assertThrows(IllegalArgumentException.class, () -> I96.valueOf(s));
+  }
+
   private static void assertParseRoundTrip(String s) {
     assertEquals(s, I96.valueOf(s).toString());
   }

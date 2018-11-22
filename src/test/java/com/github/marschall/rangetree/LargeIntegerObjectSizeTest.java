@@ -35,7 +35,7 @@ public class LargeIntegerObjectSizeTest {
 
     static I128 valueOf(String s) {
       int length = s.length();
-      if (length > 18 * 2) {
+      if (length > (18 * 2)) {
         throw new IllegalArgumentException("too long");
       }
       long high;

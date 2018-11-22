@@ -136,7 +136,7 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
   }
 
   private static boolean isRed(Node<?, ?> node) {
-    return node != null && node.color == Node.RED;
+    return (node != null) && (node.color == Node.RED);
   }
 
 

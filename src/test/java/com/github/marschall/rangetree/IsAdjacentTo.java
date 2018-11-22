@@ -5,7 +5,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 class IsAdjacentTo extends TypeSafeMatcher<I96> {
-  
+
   private final I96 greater;
 
   private IsAdjacentTo(I96 greater) {
@@ -24,7 +24,7 @@ class IsAdjacentTo extends TypeSafeMatcher<I96> {
 
   @Override
   protected boolean matchesSafely(I96 item) {
-    return I96.adjacencyTester().areAdjacent(item, greater);
+    return I96.adjacencyTester().areAdjacent(item, this.greater);
   }
 
 }
