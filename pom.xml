@@ -12,7 +12,7 @@
     <maven>3.0.3</maven>
   </prerequisites>
 
-  <url>https://github.com/marschall/stored-procedure-proxy</url>
+  <url>https://github.com/marschall/range-tree</url>
 
   <scm>
     <connection>scm:git:git@github.com:marschall/range-tree.git</connection>
@@ -45,12 +45,6 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>${junit.jupiter.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
       <version>${junit.jupiter.version}</version>
       <scope>test</scope>
     </dependency>
