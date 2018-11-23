@@ -3,7 +3,7 @@ package com.github.marschall.rangetree;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.util.AbstractMap.SimpleEntry;
+import java.util.AbstractMap.SimpleImmutableEntry;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -36,7 +36,7 @@ class RWLockRangeTreeTest {
   @Disabled("FIXME")
   void computeIfAbsent() {
     assertEquals(VALUE, this.tree.computeIfAbsent(19, key -> null));
-    assertEquals("Range 2", this.tree.computeIfAbsent(20, key -> new SimpleEntry<>(new Range<>(20, 29), "Range 2")));
+    assertEquals("Range 2", this.tree.computeIfAbsent(20, key -> new SimpleImmutableEntry<>(new Range<>(20, 29), "Range 2")));
   }
 
   @Test

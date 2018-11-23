@@ -43,6 +43,7 @@ public interface RangeMap<K extends Comparable<? super K>, V> {
    * @throws NullPointerException if {@code key} is {@code null}
    * @throws NullPointerException if {@code key} is {@code mappingFunction}
    * @see java.util.Map#computeIfAbsent(Object, Function)
+   * @see java.util.AbstractMap.SimpleImmutableEntry
    */
   V computeIfAbsent(K key, Function<? super K, Entry<Range<? extends K>, ? extends V>> mappingFunction);
 

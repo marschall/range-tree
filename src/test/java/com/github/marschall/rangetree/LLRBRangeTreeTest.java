@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.AbstractMap.SimpleEntry;
+import java.util.AbstractMap.SimpleImmutableEntry;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -121,17 +121,17 @@ class LLRBRangeTreeTest {
     this.tree.put(10, 19, "Range 1");
 
     assertEquals("Range 1", this.tree.computeIfAbsent(10, key ->
-    new SimpleEntry<>(new Range<>(10, 19), "Range 2")
+    new SimpleImmutableEntry<>(new Range<>(10, 19), "Range 2")
         ));
 
     assertEquals("Range 3", this.tree.computeIfAbsent(20, key ->
-    new SimpleEntry<>(new Range<>(20, 29), "Range 3")
+    new SimpleImmutableEntry<>(new Range<>(20, 29), "Range 3")
         ));
 
     assertEquals("Range 3", this.tree.get(29));
 
     assertNull(this.tree.computeIfAbsent(30, key ->
-    new SimpleEntry<>(new Range<>(30, 39), null)
+    new SimpleImmutableEntry<>(new Range<>(30, 39), null)
         ));
     // would throw an exception if already mapped
     this.tree.put(30, 39, "Range 4");
