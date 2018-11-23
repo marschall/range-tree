@@ -152,9 +152,35 @@ class LLRBRangeTreeTest {
   void putIfAbsentIllegalArgumentException() {
     this.tree.put(10, 19, "Range 1");
     
-    assertThrows(IllegalArgumentException.class, () -> this.tree.putIfAbsent(10, 19, "Range 1"));
     assertThrows(IllegalArgumentException.class, () -> this.tree.putIfAbsent(1, 10, "Range 1"));
     assertThrows(IllegalArgumentException.class, () -> this.tree.putIfAbsent(19, 20, "Range 1"));
+  }
+  
+  @Test
+  void manyPut() {
+    for (int i = 0; i < 100; i++) {
+      this.tree.put(i * 10, i * 10 + 8, "Range " + i);
+    }
+    for (int i = 0; i < 100; i++) {
+      assertEquals("Range " + i, this.tree.get(i * 10));
+      assertEquals("Range " + i, this.tree.get(i * 10 + 8));
+      assertNull(this.tree.get(i * 10 + 9));
+    }
+  }
+  
+  @Test
+  void manyPutIfAbsent() {
+    for (int i = 0; i < 100; i++) {
+      this.tree.putIfAbsent(i * 10, i * 10 + 8, "Range " + i);
+    }
+    for (int i = 0; i < 100; i++) {
+      this.tree.putIfAbsent(i * 10, i * 10 + 8, "Range " + i);
+    }
+    for (int i = 0; i < 100; i++) {
+      assertEquals("Range " + i, this.tree.get(i * 10));
+      assertEquals("Range " + i, this.tree.get(i * 10 + 8));
+      assertNull(this.tree.get(i * 10 + 9));
+    }
   }
 
 }

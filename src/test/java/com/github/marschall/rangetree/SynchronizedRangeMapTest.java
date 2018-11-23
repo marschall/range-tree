@@ -39,5 +39,11 @@ class SynchronizedRangeMapTest {
     this.tree.put(20, 29, "Range 2");
     assertEquals("Range 2", this.tree.get(21));
   }
+  
+  @Test
+  void putIfAbsent() {
+    assertEquals(VALUE, this.tree.putIfAbsent(10, 19, "Range 2"));
+    assertNull(this.tree.putIfAbsent(20, 29, "Range 2"));
+  }
 
 }

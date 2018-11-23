@@ -78,8 +78,17 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
   @Override
   public V putIfAbsent(K low, K high, V value) {
     this.validateRange(low, high);
-    // TODO Auto-generated method stub
-    return null;
+    Node<K, V> node = this.findNode(low, high);
+    if (node == null) {
+      // requires to traverse the tree again but the common case (lookup) is non-recursive
+      this.root = this.insert(this.root, low, high, value);
+      // we inserted so previous was always null
+      return null;
+    } else if (!node.containsRange(low, high)) {
+      throw overlappingRange(node, low, high);
+    } else {
+      return node.value;
+    }
   }
 
   private void validateRange(K low, K high) {
@@ -102,6 +111,20 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
       if (compare > 0) {
         current = current.left;
       } else if (compare < 0) {
+        current = current.right;
+      } else {
+        return current;
+      }
+    };
+    return null;
+  }
+  
+  private Node<K, V> findNode(K low, K high) {
+    Node<K, V> current = this.root;
+    while (current != null) {
+      if (current.low.compareTo(high) > 0) {
+        current = current.left;
+      } else if (current.high.compareTo(low) < 0) {
         current = current.right;
       } else {
         return current;
@@ -178,15 +201,19 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
       }
       return 0;
     }
+    
+    boolean containsRange(K a, K b) {
+      return this.low.compareTo(a) <= 0 && this.high.compareTo(b) >= 0;
+    }
 
     void flipColor() {
       this.color = !this.color;
-      if (this.left != null) {
-        this.left.color = !this.left.color;
-      }
-      if (this.right != null) {
-        this.right.color = !this.right.color;
-      }
+      // no need for null check since its only done if both
+      // children are red
+      // and null means leaf which means black
+      // in practice this always sets RED to BLACK
+      this.left.color = !this.left.color;
+      this.right.color = !this.right.color;
     }
 
     Node<K, V> rotateLeft() {
