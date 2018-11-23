@@ -20,7 +20,6 @@ import java.util.function.Function;
  */
 public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements RangeMap<K, V> {
 
-  // TODO coverage
   // TODO adjacency testing and merging
 
   private Node<K, V> root;
@@ -74,6 +73,13 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
   public void put(K low, K high, V value) {
     this.validateRange(low, high);
     this.root = this.insert(this.root, low, high, value);
+  }
+  
+  @Override
+  public V putIfAbsent(K low, K high, V value) {
+    this.validateRange(low, high);
+    // TODO Auto-generated method stub
+    return null;
   }
 
   private void validateRange(K low, K high) {

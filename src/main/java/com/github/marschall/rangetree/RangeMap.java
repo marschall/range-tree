@@ -58,5 +58,18 @@ public interface RangeMap<K extends Comparable<? super K>, V> {
    * @see java.util.Map#put(Object, Object)
    */
   void put(K low, K high, V value);
+  
+  /**
+   * Associates a range of keys with a value only if no existing mapping exists.
+   *
+   * @param low the lower end of the range, inclusive, not {@code null}
+   * @param high the upper end of the range, inclusive, not {@code null}
+   * @param value the value to associate, possibly {@code null}
+   * @return the value mapped to the key range before this method was called
+   * @throws IllegalArgumentException if {@code low} is not less than {@code high}
+   * @throws NullPointerException if {@code low} or {@code high} are {@code null}
+   * @see java.util.Map#putIfAbsent(Object, Object)
+   */
+  V putIfAbsent(K low, K high, V value);
 
 }

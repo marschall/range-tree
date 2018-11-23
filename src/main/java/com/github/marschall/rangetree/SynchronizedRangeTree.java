@@ -56,5 +56,11 @@ public final class SynchronizedRangeTree<K extends Comparable<? super K>, V> imp
     }
   }
 
+  @Override
+  public V putIfAbsent(K low, K high, V value) {
+    synchronized (this.lock) {
+      return this.delegate.putIfAbsent(low, high, value);
+    }
+  }
 
 }

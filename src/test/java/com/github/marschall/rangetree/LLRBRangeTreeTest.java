@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.Map.Entry;
+import java.util.AbstractMap.SimpleEntry;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -137,31 +137,24 @@ class LLRBRangeTreeTest {
     this.tree.put(30, 39, "Range 4");
   }
 
-  static final class SimpleEntry<K, V> implements Entry<K, V> {
+  @Test
+  void putIfAbsent() {
+    this.tree.put(10, 19, "Range 1");
+    assertEquals("Range 1", this.tree.putIfAbsent(10, 19, "Range 2"));
+    assertEquals("Range 1", this.tree.putIfAbsent(12, 16, "Range 2"));
+    assertNull(this.tree.putIfAbsent(20, 29, "Range 3"));
 
-    private final K key;
-    private final V value;
-
-    SimpleEntry(K key, V value) {
-      this.key = key;
-      this.value = value;
-    }
-
-    @Override
-    public K getKey() {
-      return this.key;
-    }
-    @Override
-    public V getValue() {
-      return this.value;
-    }
-
-    @Override
-    public V setValue(V value) {
-      throw new UnsupportedOperationException();
-    }
-
+    assertEquals("Range 1", this.tree.get(10));
+    assertEquals("Range 3", this.tree.get(20));
   }
 
+  @Test
+  void putIfAbsentIllegalArgumentException() {
+    this.tree.put(10, 19, "Range 1");
+    
+    assertThrows(IllegalArgumentException.class, () -> this.tree.putIfAbsent(10, 19, "Range 1"));
+    assertThrows(IllegalArgumentException.class, () -> this.tree.putIfAbsent(1, 10, "Range 1"));
+    assertThrows(IllegalArgumentException.class, () -> this.tree.putIfAbsent(19, 20, "Range 1"));
+  }
 
 }
