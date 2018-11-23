@@ -10,19 +10,19 @@ import java.util.function.Function;
  * @param <K> the type of keys in this tree
  * @param <V> the type of values in this tree
  */
-public final class SynchronizedRangeTree<K extends Comparable<? super K>, V> implements RangeMap<K, V> {
+public final class SynchronizedRangeMap<K extends Comparable<? super K>, V> implements RangeMap<K, V> {
 
   private final  RangeMap<K, V> delegate;
 
   private final Object lock;
 
   /**
-   * Constructs a new {@link SynchronizedRangeTree}.
+   * Constructs a new {@link SynchronizedRangeMap}.
    *
    * @param delegate the delegate to wrap, not {@code null}
    * @throws NullPointerException if {@code delegate} is {@code null}
    */
-  public SynchronizedRangeTree(RangeMap<K, V> delegate) {
+  public SynchronizedRangeMap(RangeMap<K, V> delegate) {
     Objects.requireNonNull(delegate, "delegate");
     this.delegate = delegate;
     this.lock = new Object();

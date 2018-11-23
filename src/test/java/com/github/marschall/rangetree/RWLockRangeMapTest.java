@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-class RWLockRangeTreeTest {
+class RWLockRangeMapTest {
 
   private static final String VALUE = "Range 1";
 
@@ -17,7 +17,7 @@ class RWLockRangeTreeTest {
 
   @BeforeEach
   void setUp() {
-    this.tree = new RWLockRangeTree<Integer, String>(new LLRBRangeTree<>());
+    this.tree = new RWLockRangeMap<Integer, String>(new LLRBRangeTree<>());
     this.tree.put(10, 19, VALUE);
   }
 

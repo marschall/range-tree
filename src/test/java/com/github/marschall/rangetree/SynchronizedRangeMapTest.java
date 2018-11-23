@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class SynchronizedRangeTreeTest {
+class SynchronizedRangeMapTest {
 
   private static final String VALUE = "Range 1";
 
@@ -14,7 +14,7 @@ class SynchronizedRangeTreeTest {
 
   @BeforeEach
   void setUp() {
-    this.tree = new SynchronizedRangeTree<Integer, String>(new LLRBRangeTree<>());
+    this.tree = new SynchronizedRangeMap<Integer, String>(new LLRBRangeTree<>());
     this.tree.put(10, 19, VALUE);
   }
 

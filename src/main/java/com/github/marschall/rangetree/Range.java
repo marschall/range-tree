@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * An range with an lower and upper bound.
  *
- * @param <E> the type of element in the rang
+ * @param <E> the type of element in the range
  */
 public final class Range<E> {
 

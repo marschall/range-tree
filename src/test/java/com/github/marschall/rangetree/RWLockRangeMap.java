@@ -7,13 +7,13 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
 
-public final class RWLockRangeTree<K extends Comparable<? super K>, V> implements RangeMap<K, V> {
+public final class RWLockRangeMap<K extends Comparable<? super K>, V> implements RangeMap<K, V> {
 
   private final RangeMap<K, V> delegate;
 
   private final ReadWriteLock lock;
 
-  public RWLockRangeTree(RangeMap<K, V> delegate) {
+  public RWLockRangeMap(RangeMap<K, V> delegate) {
     this.delegate = delegate;
     Objects.requireNonNull(delegate, "delegate");
     this.lock = new ReentrantReadWriteLock();

@@ -6,17 +6,21 @@ import java.util.function.Function;
 /**
  * An object that maps ranges of keys to values. Cannot contain
  * duplicate keys or overlapping ranges.
+ * 
+ * <p>The interface offers a subset of the operations of
+ * {@link java.util.Map} with the write operations having instead two
+ * keys denoting the inclusive upper and lower bounds of a range.</p>
  *
  * @param <K> the type of keys in this tree
  * @param <V> the type of values in this tree
  * @see java.util.Map
+ * @see <a href="https://en.wikipedia.org/wiki/Range_tree">Range tree</a>
  */
 public interface RangeMap<K extends Comparable<? super K>, V> {
 
-  // TODO putIfAbsent
-
   /**
    * Removes all mappings from this object.
+   * 
    * @see java.util.Map#clear()
    */
   void clear();
