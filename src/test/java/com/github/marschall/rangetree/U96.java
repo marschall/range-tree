@@ -6,6 +6,9 @@ import java.util.Objects;
  * A 96 bit unsigned integer intended only for lookups into a {@link RangeMap}.
  */
 public final class U96 implements Comparable<U96> {
+  
+  // TODO pad to length with 0 and 9
+  // TODO valueOf BigDecimal
 
   private final int high;
   private final long low;
@@ -43,7 +46,6 @@ public final class U96 implements Comparable<U96> {
    *                                  characters
    */
   public static U96 valueOf(String s) {
-    // TODO BigDecimal
     Objects.requireNonNull(s, "s");
     int length = s.length();
     if (length > (18 + 9)) {
