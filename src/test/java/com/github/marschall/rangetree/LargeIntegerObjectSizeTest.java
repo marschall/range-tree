@@ -4,6 +4,8 @@ import java.math.BigInteger;
 
 import org.openjdk.jol.info.GraphLayout;
 
+import com.github.marschall.rangetree.key.U96;
+
 public class LargeIntegerObjectSizeTest {
 
   public static void main(String[] args) {
