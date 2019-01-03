@@ -45,7 +45,23 @@ public final class U96 implements Comparable<U96> {
       }
     };
   }
-  
+
+  /**
+   * Creates an {@link U96} from a string with padding.
+   * 
+   * @param s a numeric string
+   * @param length the length to with to pad
+   * @param pad the number to pad with
+   * @return the parsed instance
+   * @throws NullPointerException if {@code s} is {@code null}
+   * @throws IllegalArgumentException if {@code s} is empty
+   * @throws IllegalArgumentException if {@code s} is longer than {@value #MAX_LENGTH}
+   * @throws IllegalArgumentException if {@code s} has a negative sign
+   * @throws IllegalArgumentException if {@code s} is longer than 27
+   *                                  characters
+   * @throws IllegalArgumentException if {@code length} is less than the length of {@code d}
+   * @throws IllegalArgumentException if {@code pad} is not [0..9]
+   */
   public static U96 valueOfPadded(String s, int length, int pad) {
     if (length <= 0) {
       throw new IllegalArgumentException("length must be greater than 0");
