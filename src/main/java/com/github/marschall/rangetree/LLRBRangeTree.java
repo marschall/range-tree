@@ -174,9 +174,9 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
     static final boolean RED   = true;
     static final boolean BLACK = false;
 
-    K low;
-    K high;
-    V value;
+    final K low;
+    final K high;
+    final V value;
     boolean color;
     Node<K, V> left; // smaller
     Node<K, V> right; // larger
