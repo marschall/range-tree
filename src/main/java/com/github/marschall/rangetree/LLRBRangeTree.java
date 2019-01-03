@@ -115,7 +115,7 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
       } else {
         return current;
       }
-    };
+    }
     return null;
   }
   
@@ -129,7 +129,7 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
       } else {
         return current;
       }
-    };
+    }
     return null;
   }
 
