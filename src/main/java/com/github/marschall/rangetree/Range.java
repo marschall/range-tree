@@ -7,10 +7,10 @@ import java.util.Objects;
  *
  * @param <E> the type of element in the range
  */
-public final class Range<E> {
+public inline class Range<E> {
 
-  private final E low;
-  private final E high;
+  private E low;
+  private E high;
 
   /**
    * Constructs a range

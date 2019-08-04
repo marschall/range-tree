@@ -9,20 +9,20 @@ import com.github.marschall.rangetree.RangeMap;
 /**
  * A 96 bit unsigned integer intended only for lookups into a {@link RangeMap}.
  */
-public final class U96 implements Comparable<U96> {
-  
+public inline class U96 implements Comparable<U96?> {
+
   /**
    * The maximum allowed length of an input string.
    */
   public static final int MAX_LENGTH = 9 + 18;
-  
+
   // a lot of the parse code an be rewritten with Java 11
   // - avoid substring and instead pass the indexes to parseLong and parseInt
   // - replace the padding with a custom CharSequence
   // TODO valueOf BigDecimal
 
-  private final int high;
-  private final long low;
+  private int high;
+  private long low;
 
   private U96(int high, long low) {
     this.high = high;
@@ -34,16 +34,31 @@ public final class U96 implements Comparable<U96> {
    * 
    * @return an adjacency tester for {@link U96}
    */
-  public static AdjacencyTester<U96> adjacencyTester() {
-    return (low, high) -> {
-      if (low.high == high.high) {
-        return (low.low + 1) == high.low;
-      } else if ((low.high + 1) == high.high) {
-        return (low.low == 999_999_999_999_999_999L) && (high.low == 0L);
-      } else {
-        return false;
+  public static AdjacencyTester<U96?> adjacencyTester() {
+    return new AdjacencyTester<U96?>() {
+      public boolean areAdjacent(U96? low, U96? high) {
+        Objects.requireNonNull(low, "low");
+        Objects.requireNonNull(high, "high");
+        if (low.high == high.high) {
+          return (low.low + 1) == high.low;
+        } else if ((low.high + 1) == high.high) {
+          return (low.low == 999_999_999_999_999_999L) && (high.low == 0L);
+        } else {
+          return false;
+        }
       }
     };
+//    return (U96? low, U96? high) -> {
+//      Objects.requireNonNull(low, "low");
+//      Objects.requireNonNull(high, "high");
+//      if (low.high == high.high) {
+//        return (low.low + 1) == high.low;
+//      } else if ((low.high + 1) == high.high) {
+//        return (low.low == 999_999_999_999_999_999L) && (high.low == 0L);
+//      } else {
+//        return false;
+//      }
+//    };
   }
 
   /**
@@ -127,26 +142,10 @@ public final class U96 implements Comparable<U96> {
     }
     return new U96(high, low);
   }
-  
-  @Override
-  public boolean equals(Object obj) {
-    if (obj == this) {
-      return true;
-    }
-    if (!(obj instanceof U96)) {
-      return false;
-    }
-    U96 other = (U96) obj;
-    return this.high == other.high && this.low == other.low;
-  }
-  
-  @Override
-  public int hashCode() {
-    return Arrays.hashCode(new long[] {this.high, this.low});
-  }
 
   @Override
-  public int compareTo(U96 o) {
+  public int compareTo(U96? o) {
+    Objects.requireNonNull(o, "other");
     int highCompare = Integer.compare(this.high, o.high);
     if (highCompare != 0) {
       return highCompare;

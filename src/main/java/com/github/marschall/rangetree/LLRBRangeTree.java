@@ -74,7 +74,7 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
     this.validateRange(low, high);
     this.root = this.insert(this.root, low, high, value);
   }
-  
+
   @Override
   public V putIfAbsent(K low, K high, V value) {
     this.validateRange(low, high);
@@ -118,7 +118,7 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
     }
     return null;
   }
-  
+
   private Node<K, V> findNode(K low, K high) {
     Node<K, V> current = this.root;
     while (current != null) {
@@ -201,7 +201,7 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
       }
       return 0;
     }
-    
+
     boolean containsRange(K a, K b) {
       return this.low.compareTo(a) <= 0 && this.high.compareTo(b) >= 0;
     }

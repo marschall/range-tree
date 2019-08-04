@@ -6,7 +6,7 @@ import java.util.function.Function;
 /**
  * An object that maps ranges of keys to values. Cannot contain
  * duplicate keys or overlapping ranges.
- * 
+ *
  * <p>The interface offers a subset of the operations of
  * {@link java.util.Map} with the write operations having instead two
  * keys denoting the inclusive upper and lower bounds of a range.</p>
@@ -49,7 +49,7 @@ public interface RangeMap<K extends Comparable<? super K>, V> {
    * @see java.util.Map#computeIfAbsent(Object, Function)
    * @see java.util.AbstractMap.SimpleImmutableEntry
    */
-  V computeIfAbsent(K key, Function<? super K, Entry<Range<? extends K>, ? extends V>> mappingFunction);
+  V computeIfAbsent(K key, Function<? super K, Entry<Range<? extends K?>, ? extends V>> mappingFunction);
 
   /**
    * Associates a range of keys with a value.
@@ -63,7 +63,7 @@ public interface RangeMap<K extends Comparable<? super K>, V> {
    * @see java.util.Map#put(Object, Object)
    */
   void put(K low, K high, V value);
-  
+
   /**
    * Associates a range of keys with a value only if no existing mapping exists.
    *
