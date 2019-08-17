@@ -10,12 +10,12 @@ import com.github.marschall.rangetree.RangeMap;
  * A 96 bit unsigned integer intended only for lookups into a {@link RangeMap}.
  */
 public final class U96 implements Comparable<U96> {
-  
+
   /**
    * The maximum allowed length of an input string.
    */
   public static final int MAX_LENGTH = 9 + 18;
-  
+
   // a lot of the parse code an be rewritten with Java 11
   // - avoid substring and instead pass the indexes to parseLong and parseInt
   // - replace the padding with a custom CharSequence
@@ -127,7 +127,7 @@ public final class U96 implements Comparable<U96> {
     }
     return new U96(high, low);
   }
-  
+
   @Override
   public boolean equals(Object obj) {
     if (obj == this) {
@@ -139,7 +139,7 @@ public final class U96 implements Comparable<U96> {
     U96 other = (U96) obj;
     return this.high == other.high && this.low == other.low;
   }
-  
+
   @Override
   public int hashCode() {
     return Arrays.hashCode(new long[] {this.high, this.low});
