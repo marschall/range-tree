@@ -86,6 +86,7 @@
           <links>
             <link>https://docs.oracle.com/javase/8/docs/api/</link>
           </links>
+          <source>8</source>
         </configuration>
         <executions>
           <execution>
@@ -119,6 +120,12 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkCount>0</forkCount>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
