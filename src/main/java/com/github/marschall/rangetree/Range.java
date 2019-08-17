@@ -15,8 +15,8 @@ public final class Range<E> {
   /**
    * Constructs a range
    *
-   * @param low the lower bound, not {@code null}
-   * @param high the upper bound, not {@code null}
+   * @param low the lower bound, inclusive, not {@code null}
+   * @param high the upper bound, inclusive, not {@code null}
    */
   public Range(E low, E high) {
     Objects.requireNonNull(low, "low");
@@ -41,6 +41,11 @@ public final class Range<E> {
    */
   E getHigh() {
     return this.high;
+  }
+
+  @Override
+  public String toString() {
+    return "[" + this.low + ".." + this.high + "]";
   }
 
 }
