@@ -35,30 +35,17 @@ public inline class U96 implements Comparable<U96?> {
    * @return an adjacency tester for {@link U96}
    */
   public static AdjacencyTester<U96?> adjacencyTester() {
-    return new AdjacencyTester<U96?>() {
-      public boolean areAdjacent(U96? low, U96? high) {
-        Objects.requireNonNull(low, "low");
-        Objects.requireNonNull(high, "high");
-        if (low.high == high.high) {
-          return (low.low + 1) == high.low;
-        } else if ((low.high + 1) == high.high) {
-          return (low.low == 999_999_999_999_999_999L) && (high.low == 0L);
-        } else {
-          return false;
-        }
+    return (U96? low, U96? high) -> {
+      Objects.requireNonNull(low, "low");
+      Objects.requireNonNull(high, "high");
+      if (low.high == high.high) {
+        return (low.low + 1) == high.low;
+      } else if ((low.high + 1) == high.high) {
+        return (low.low == 999_999_999_999_999_999L) && (high.low == 0L);
+      } else {
+        return false;
       }
     };
-//    return (U96? low, U96? high) -> {
-//      Objects.requireNonNull(low, "low");
-//      Objects.requireNonNull(high, "high");
-//      if (low.high == high.high) {
-//        return (low.low + 1) == high.low;
-//      } else if ((low.high + 1) == high.high) {
-//        return (low.low == 999_999_999_999_999_999L) && (high.low == 0L);
-//      } else {
-//        return false;
-//      }
-//    };
   }
 
   /**
