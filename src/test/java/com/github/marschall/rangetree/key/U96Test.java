@@ -12,8 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.marschall.rangetree.key.U96;
-
 class U96Test {
 
   @Test

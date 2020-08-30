@@ -4,8 +4,6 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import com.github.marschall.rangetree.key.U96;
-
 class IsAdjacentTo extends TypeSafeMatcher<U96> {
 
   private final U96 greater;
