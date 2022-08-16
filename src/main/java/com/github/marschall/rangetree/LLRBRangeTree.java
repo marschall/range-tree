@@ -118,7 +118,7 @@ public final class LLRBRangeTree<K extends Comparable<? super K>, V> implements 
     }
     return null;
   }
-  
+
   private Node<K, V> findNode(K low, K high) {
     Node<K, V> current = this.root;
     while (current != null) {

@@ -1,5 +1,9 @@
 package com.github.marschall.rangetree.key;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodHandles.Lookup;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -10,16 +14,57 @@ import com.github.marschall.rangetree.RangeMap;
  * A 96 bit unsigned integer intended only for lookups into a {@link RangeMap}.
  */
 public final class U96 implements Comparable<U96> {
+  
+  private static final MethodHandle PARSE_INT;
+  
+  private static final MethodHandle PARSE_LONG;
+  
+  static {
+    Lookup lookup = MethodHandles.lookup();
+    MethodHandle parseLongHandle;
+    try {
+      try {
+        Method parseLong = Long.class.getDeclaredMethod("parseLong", new Class[] {CharSequence.class, int.class, int.class, int.class});
+        parseLongHandle = radix10(lookup.unreflect(parseLong));
+      } catch (NoSuchMethodException e) {
+        Method parseLongFallback;
+        try {
+          parseLongFallback = U96.class.getDeclaredMethod("parseLongFallback", new Class[] {CharSequence.class, int.class, int.class});
+        } catch (NoSuchMethodException e1) {
+          throw new IncompatibleClassChangeError("parseLongFallback not found");
+        }
+        parseLongHandle = lookup.unreflect(parseLongFallback);
+      }
+      PARSE_LONG = parseLongHandle;
+
+      MethodHandle parseIntHandle;
+      try {
+        Method parseInt =Integer.class.getDeclaredMethod("parseInt", new Class[] {CharSequence.class, int.class, int.class, int.class});
+        parseIntHandle = radix10(lookup.unreflect(parseInt));
+      } catch (NoSuchMethodException e) {
+        Method parseLongFallback;
+        try {
+          parseLongFallback = U96.class.getDeclaredMethod("parseIntFallback", new Class[] {CharSequence.class, int.class, int.class});
+        } catch (NoSuchMethodException e1) {
+          throw new IncompatibleClassChangeError("parseIntFallback not found");
+        }
+        parseIntHandle = lookup.unreflect(parseLongFallback);
+      }
+      PARSE_INT = parseIntHandle;
+      
+    } catch (IllegalAccessException e) {
+      throw new IllegalStateException("could not lookup method handle", e);
+    }
+  }
+  
+  private static MethodHandle radix10(MethodHandle methodHandle) {
+    return MethodHandles.insertArguments(methodHandle, 3, 10);
+  }
 
   /**
    * The maximum allowed length of an input string.
    */
   public static final int MAX_LENGTH = 9 + 18;
-
-  // a lot of the parse code an be rewritten with Java 11
-  // - avoid substring and instead pass the indexes to parseLong and parseInt
-  // - replace the padding with a custom CharSequence
-  // TODO valueOf BigDecimal
 
   private final int high;
   private final long low;
@@ -113,7 +158,7 @@ public final class U96 implements Comparable<U96> {
     int highLength;
     if (length > 18) {
       highLength = length - 18;
-      high = Integer.parseInt(s.substring(0, highLength));
+      high = parseInt(s, 0, highLength);
     } else {
       highLength = 0;
       high = 0;
@@ -121,11 +166,43 @@ public final class U96 implements Comparable<U96> {
     if (high < 0) {
       throw new IllegalArgumentException("negative values not allowed");
     }
-    long low = Long.parseLong(s.substring(0 + highLength, length));
+    long low = parseLong(s, 0 + highLength, length);
     if (low < 0L) {
       throw new IllegalArgumentException("negative values not allowed");
     }
     return new U96(high, low);
+  }
+
+  private static long parseLong(CharSequence s, int beginIndex, int endIndex) {
+    try {
+      return (long) PARSE_LONG.invokeExact(s, beginIndex, endIndex);
+    } catch (RuntimeException e) {
+      throw e;
+    } catch (Error e) {
+      throw e;
+    } catch (Throwable e) {
+      throw new IllegalStateException("unexpected exception class", e);
+    }
+  }
+
+  private static int parseInt(CharSequence s, int beginIndex, int endIndex) {
+    try {
+      return (int) PARSE_INT.invokeExact(s, beginIndex, endIndex);
+    } catch (RuntimeException e) {
+      throw e;
+    } catch (Error e) {
+      throw e;
+    } catch (Throwable e) {
+      throw new IllegalStateException("unexpected exception class", e);
+    }
+  }
+
+  private static int parseIntFallback(CharSequence s, int beginIndex, int endIndex) {
+    return Integer.parseInt(s.toString().substring(beginIndex, endIndex));
+  }
+
+  private static long parseLongFallback(CharSequence s, int beginIndex, int endIndex) {
+    return Long.parseLong(s.toString().substring(beginIndex, endIndex));
   }
 
   @Override
