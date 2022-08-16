@@ -219,7 +219,7 @@ public final class U96 implements Comparable<U96> {
 
   @Override
   public int hashCode() {
-    return Arrays.hashCode(new long[] {this.high, this.low});
+    return (31 * (31 + this.high)) + Long.hashCode(this.low);
   }
 
   @Override

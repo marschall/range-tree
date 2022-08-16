@@ -107,6 +107,7 @@ class U96Test {
   @Test
   void testHashCode() {
     assertEquals(U96.valueOf("1234567890123456789").hashCode(), U96.valueOf("1234567890123456789").hashCode());
+    assertEquals(-708518091, U96.valueOf("1234567890123456789").hashCode());
   }
 
   private static void assertInvalid(String s) {
